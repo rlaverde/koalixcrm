@@ -219,6 +219,15 @@ TEMPLATE_LOADERS = (
     "django.template.loaders.app_directories.Loader",
 )
 
+TEMPLATES = [
+    {
+        'OPTIONS': {
+          'allowed_include_roots': (),
+        },
+    },
+]
+
+
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )

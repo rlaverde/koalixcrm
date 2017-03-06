@@ -1,12 +1,14 @@
 from __future__ import unicode_literals
 
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 from django.conf.urls.i18n import i18n_patterns
 from django.contrib import admin
+
 from mezzanine.core.views import direct_to_template
 from crm_core import views
 from ajax_select import urls as ajax_select_urls
-
+import mezzanine
+import cartridge
 
 admin.autodiscover()
 
@@ -17,11 +19,10 @@ admin.autodiscover()
 
 urlpatterns = \
     i18n_patterns(
-        "",
         # Change the admin prefix here to use an alternate URL for the
         # admin interface, which would be marginally more secure.
-        ('^admin/', include('smuggler.urls')),
-        ("^admin/", include(admin.site.urls)),
+        url('^admin/', include('smuggler.urls')),
+        url("^admin/", include(admin.site.urls)),
         url(r'^dashboard/$', views.show_dashboard, name='dashboard'),
         url(r'^login/$', views.login_user, name='login'),
         url(r'^logout/$', views.login_user, name='logout'),
@@ -142,7 +143,7 @@ urlpatterns = \
         url(r'^quotes/detail/(?P<pk>\d+)/$', views.view_quote_details, name='quote_detail'),
     )
 
-urlpatterns += patterns('',
+urlpatterns += [
                         # We don't want to presume how your homepage works, so here are a
                         # few patterns you can use to set it up.
 
@@ -183,18 +184,18 @@ urlpatterns += patterns('',
                         # ``mezzanine.urls``.
 
                          # Cartridge URLs.
-                        url("^shop/", include("cartridge.shop.urls")),
-                        url(r"^account/orders/$", "cartridge.shop.views.order_history", name="shop_order_history"),
+                        url("^shop/", include('cartridge.shop.urls')),
+                        url(r"^account/orders/$", cartridge.shop.views.order_history, name="shop_order_history"),
 
-                        url("^", include("mezzanine.urls")),
-)
+                        url("^", include('mezzanine.urls')),
+]
 
 try:
     import ajax_select
     # If django-ajax-selects is installed, include its URLs:
-    urlpatterns += patterns('',
+    urlpatterns.extend([
                             url(r'^admin/lookups/', include(ajax_select_urls)),
-    )
+    ])
 except ImportError:
     pass
 

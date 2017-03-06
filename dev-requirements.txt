@@ -19,3 +19,5 @@ django-debug-toolbar
 sphinx-rtd-theme
 django-extensions
 coverage
+
+html5lib>=0.999,<0.9999999

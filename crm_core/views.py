@@ -1,21 +1,23 @@
 # -*- coding: utf-8 -*-
 
-from braces.views import PermissionRequiredMixin, LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DeleteView, DetailView
 from django.http import HttpResponse
 from django.template import RequestContext, loader
-from django_tables2 import SingleTableView, RequestConfig
-from extra_views import UpdateWithInlinesView, InlineFormSet, NamedFormsetsMixin, CreateWithInlinesView
 from django.shortcuts import render_to_response, redirect
 from django.contrib.auth import authenticate, login, logout
-from crm_core.custom.mixins import UpdateWithModifiedByMixin, CreateWithModifieByMixin, \
-    CreateWithInlinesAndModifiedByMixin, UpdateWithInlinesAndModifiedByMixin
-from crm_core import forms, models
-from tables import ContractTable, CustomerTable, SupplierTable, ProductTable, TaxTable, BillingCycleTable, UnitTable, \
-    CustomerGroupTable, ProductCategoryTable
+
+from django_tables2 import SingleTableView, RequestConfig
+from braces.views import PermissionRequiredMixin, LoginRequiredMixin
+from extra_views import UpdateWithInlinesView, InlineFormSet, NamedFormsetsMixin, CreateWithInlinesView
 from cartridge.shop import models as cartridge_models
+
+from .custom.mixins import UpdateWithModifiedByMixin, CreateWithModifieByMixin, \
+    CreateWithInlinesAndModifiedByMixin, UpdateWithInlinesAndModifiedByMixin
+from . import forms, models
+from .tables import ContractTable, CustomerTable, SupplierTable, ProductTable, TaxTable, BillingCycleTable, UnitTable, \
+    CustomerGroupTable, ProductCategoryTable
 from django.conf import settings
 
 

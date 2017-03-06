@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
-import reversion
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
+
+from reversion.admin import VersionAdmin
 from cartridge.shop import models as cartridge_models
 from cartridge.shop.admin import admin as cartridge_admin
-from crm_core.models import UserExtension, Customer, Invoice, PurchaseOrder, Quote, Supplier, HTMLFile, TemplateSet, \
+
+from .models import UserExtension, Customer, Invoice, PurchaseOrder, Quote, Supplier, HTMLFile, TemplateSet, \
     CustomerBillingCycle, CustomerGroup, Contract, Unit, TaxRate, \
     UnitTransform, CompanyContactData
 
@@ -48,7 +50,7 @@ class CustomerGroupAdmin(admin.ModelAdmin):
 admin.site.register(CustomerGroup, CustomerGroupAdmin)
 
 
-class CustomerAdmin(reversion.VersionAdmin):
+class CustomerAdmin(VersionAdmin):
     change_list_template = 'smuggler/change_list.html'
     list_display = (
         u'id',
@@ -75,7 +77,7 @@ class CustomerAdmin(reversion.VersionAdmin):
 admin.site.register(Customer, CustomerAdmin)
 
 
-class SupplierAdmin(reversion.VersionAdmin):
+class SupplierAdmin(VersionAdmin):
     change_list_template = 'smuggler/change_list.html'
     list_display = (
         u'id',
@@ -125,7 +127,7 @@ class ContractAdmin(admin.ModelAdmin):
 admin.site.register(Contract, ContractAdmin)
 
 
-class PurchaseOrderAdmin(reversion.VersionAdmin):
+class PurchaseOrderAdmin(VersionAdmin):
     change_list_template = 'smuggler/change_list.html'
     list_display = (
         u'id',
@@ -148,7 +150,7 @@ class PurchaseOrderAdmin(reversion.VersionAdmin):
 admin.site.register(PurchaseOrder, PurchaseOrderAdmin)
 
 
-class QuoteAdmin(reversion.VersionAdmin):
+class QuoteAdmin(VersionAdmin):
     change_list_template = 'smuggler/change_list.html'
     list_display = (
         u'id',
@@ -171,7 +173,7 @@ class QuoteAdmin(reversion.VersionAdmin):
 admin.site.register(Quote, QuoteAdmin)
 
 
-class InvoiceAdmin(reversion.VersionAdmin):
+class InvoiceAdmin(VersionAdmin):
     change_list_template = 'smuggler/change_list.html'
     list_display = (
         u'id',
