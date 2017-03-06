@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DeleteView, DetailView
 from django.http import HttpResponse
 from django.template import RequestContext, loader
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 
 from django_tables2 import SingleTableView, RequestConfig
@@ -57,7 +57,7 @@ def login_user(request):
                 login(request, user)
                 return redirect(reverse_lazy('dashboard'), permanent=True)
 
-    return render_to_response('registration/login.html', context_instance=RequestContext(request))
+    return render(request, 'registration/login.html')
 
 
 def show_dashboard(request):
@@ -70,21 +70,21 @@ def show_dashboard(request):
     for contract in models.Contract.objects.exclude(state=20 or 100):
         if contract not in opencontracts:
             opencontracts.append(contract)
-    template = loader.get_template('dashboard.html')
-    context = RequestContext(request, {
+    template = 'dashboard.html'
+    context = {
         'contractcount': contractcount,
         'invoicecount': invoicecount,
         'customercount': customercount,
         'suppliercount': suppliercount,
         'productcount': productcount,
         'opencontracts': opencontracts,
-    })
-    return HttpResponse(template.render(context))
+    }
+    return HttpResponse(render(request, template, context))
 
 
 def show_settings(request):
     config = RequestConfig(request)
-    template = loader.get_template('settings.html')
+    template = 'settings.html'
     taxtable = TaxTable(models.TaxRate.objects.all(), prefix="tax-")
     billingcycleable = BillingCycleTable(models.CustomerBillingCycle.objects.all(), prefix="billingcycle-")
     unittable = UnitTable(models.Unit.objects.all(), prefix="unit-")
@@ -100,14 +100,14 @@ def show_settings(request):
     unittable.paginate(page=request.GET.get('page', 1), per_page=5)
     customergrouptable.paginate(page=request.GET.get('page', 1), per_page=5)
     productcategorytable.paginate(page=request.GET.get('page', 1), per_page=5)
-    context = RequestContext(request, {
+    context = {
         'taxtable': taxtable,
         'billingcycletable': billingcycleable,
         'unittable': unittable,
         'customergrouptable': customergrouptable,
         'productcategorytable': productcategorytable
-    })
-    return HttpResponse(template.render(context))
+    }
+    return HttpResponse(render(request, template, context))
 
 
 # ##############################
